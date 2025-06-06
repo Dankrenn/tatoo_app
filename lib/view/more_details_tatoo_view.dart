@@ -55,7 +55,7 @@ class MoreDetailsTatooView extends StatelessWidget {
               const SizedBox(height: 24),
               MyOutlinedButton(
                 text: 'Хочу записаться',
-                callback: () => model.goBooking(context),
+                callback: (){ model.navigateToBooking(context,model.selectTattoo);},
                 isFullWidth: true,
               ),
             ],

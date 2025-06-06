@@ -12,4 +12,14 @@ class Tattoo {
     required this.artistFullName,
     required this.price,
   });
+
+  factory Tattoo.fromMap(Map<String, dynamic> map) {
+    return Tattoo(
+      id: map['id'],
+      name: map['name'],
+      imageUrl: map['imageUrl'],
+      artistFullName: map['artistFullName'],
+      price: map['price'].toDouble(),
+    );
+  }
 }

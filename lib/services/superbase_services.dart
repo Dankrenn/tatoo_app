@@ -123,7 +123,7 @@ class SuperBaseServices extends ChangeNotifier {
   Future<Map<String, dynamic>?> getUserData(String userId) async {
     try {
       DocumentSnapshot doc =
-          await _firestore.collection('users').doc(userId).get();
+      await _firestore.collection('users').doc(userId).get();
       return doc.data() as Map<String, dynamic>?;
     } catch (e) {
       debugPrint('Error getting user data: $e');
@@ -134,7 +134,7 @@ class SuperBaseServices extends ChangeNotifier {
   Future<List<Tattoo>> getAllTattoos() async {
     try {
       QuerySnapshot querySnapshot =
-          await _firestore.collection('tattoos').get();
+      await _firestore.collection('tattoos').get();
       return querySnapshot.docs.map((doc) {
         return Tattoo(
           id: doc.id,
@@ -205,5 +205,45 @@ class SuperBaseServices extends ChangeNotifier {
     }
   }
 
+  Future<void> addToFavorites(Tattoo tattoo) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).update({
+          'favoriteTattoos': FieldValue.arrayUnion([
+            _convertTattooToMap(tattoo),
+          ]),
+        });
+      }
+    } catch (e) {
+      print('Error adding to favorites: $e');
+      throw Exception('Ошибка при добавлении в избранное');
+    }
+  }
 
+  Future<void> removeFromFavorites(Tattoo tattoo) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).update({
+          'favoriteTattoos': FieldValue.arrayRemove([
+            _convertTattooToMap(tattoo),
+          ]),
+        });
+      }
+    } catch (e) {
+      print('Error removing from favorites: $e');
+      throw Exception('Ошибка при удалении из избранного');
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

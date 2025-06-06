@@ -19,56 +19,62 @@ class TattooCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<ShowTatooModel>(context);
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  height: 150, // Set a fixed height for the image
-                  child: Image.network(
-                    tattoo.imageUrl,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                ),
-                Positioned(
-                  top: 2,
-                  right: 2,
-                  child: IconButton(
-                    icon: Icon(
-                      isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorite ? Colors.red : Colors.grey,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 200,
+            maxHeight: 300,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Добавляем это
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded( // Оборачиваем изображение в Expanded
+                child: Stack(
+                  children: [
+                    Image.network(
+                      tattoo.imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
-                    onPressed: () {
-                      //model.toggleFavorite(tattoo, context);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tattoo.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: IconButton(
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.white,
+                        ),
+                        onPressed: onFavoriteToggle,
+                      ),
                     ),
-                  ),
-                  Text('Автор: ${tattoo.artistFullName}'),
-                  Text('Цена: ${tattoo.price.toStringAsFixed(2)}'),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min, // Добавляем это
+                  children: [
+                    Text(
+                      tattoo.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text('Автор: ${tattoo.artistFullName}'),
+                    Text('Цена: ${tattoo.price.toStringAsFixed(2)} ₽'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

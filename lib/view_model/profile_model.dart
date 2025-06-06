@@ -81,15 +81,37 @@ class ProfileModel extends ChangeNotifier {
     return recordsData.map((recordData) {
       final artistData = recordData['tattooArtist'] ?? {};
 
+      // Получаем статус из данных или используем 'ожидание' по умолчанию
+      final status = recordData['status']?.toString().toLowerCase() ?? 'ожидание';
+
+      // Приводим статус к одному из допустимых значений
+      String normalizedStatus;
+      switch (status) {
+        case 'подтверждено':
+        case 'confirmed':
+          normalizedStatus = 'подтверждено';
+          break;
+        case 'отменено':
+        case 'canceled':
+          normalizedStatus = 'отменено';
+          break;
+        case 'завершено':
+        case 'completed':
+          normalizedStatus = 'завершено';
+          break;
+        default:
+          normalizedStatus = 'ожидание'; // Значение по умолчанию
+      }
+
       return RecordApp(
         dateTime: DateTime.parse(recordData['dateTime']),
-        status: 'отменено',
+        status: normalizedStatus,
         tattooArtist: UserApp(
           email: artistData['email'] ?? '',
           favoriteTattoos: [],
           records: [],
           role: artistData['role'] ?? 'artist',
-          id: '1',
+          id: artistData['id']?.toString() ?? '1', // Используем ID из данных или '1' по умолчанию
         ),
       );
     }).toList();
@@ -104,6 +126,7 @@ class ProfileModel extends ChangeNotifier {
   // обновление данных данных
   Future<void> refreshUserData() async {
     await _loadUserData();
+    notifyListeners();
   }
 
   // Удаление из избранного
@@ -141,9 +164,10 @@ class ProfileModel extends ChangeNotifier {
 
   void goMore(BuildContext context, Tattoo tattoo) {
     final model = Provider.of<ShowTatooModel>(context, listen: false);
-    //model.setSelectTattoo(tattoo);
-    context.push(NavigatorRouse.more, extra: tattoo);
+    model.setSelectedTattoo(tattoo);
+    context.push(NavigatorRouse.more);
   }
+
 
 
   void goBooking(BuildContext context) {

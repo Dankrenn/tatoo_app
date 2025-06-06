@@ -24,11 +24,10 @@ void main() async{
           projectId: 'tatooapp-9e098'));
   final user = FirebaseAuth.instance.currentUser;
   if (user != null) {
-    initialRoute = NavigatorRouse.auth;
+    initialRoute = NavigatorRouse.hub;
   } else {
     initialRoute = NavigatorRouse.auth;
   }
-  runApp(const MyApp());
   runApp(const MyApp());
 }
 
@@ -59,7 +58,7 @@ class MyApp extends StatelessWidget {
         builder: (context, themeModel, child) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(),
+            theme:themeModel.theme,
             routerConfig: NavigatorApp().routerConfig,
           );
         },
