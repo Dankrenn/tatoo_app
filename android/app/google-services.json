@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "638883314348",
+    "project_id": "tatooapp-9e098",
+    "storage_bucket": "tatooapp-9e098.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638883314348:android:c4d76c8d3bfe5122603d09",
+        "android_client_info": {
+          "package_name": "com.example.tatoo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXA1zDMHzFPpJlh84Q9YE_99uyJY-s8b0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
